@@ -11,49 +11,63 @@ csvpath = os.path.join('Resources', 'budget_data.csv')
 months = []
 profits = []
 profitchange = []
+headers = []
 
 with open(csvpath) as csvfile:
 
     csvreader = csv.reader(csvfile, delimiter=',')
-    firstrow = next(csvreader)
+    # Read and store headers
+    headers = next(csvreader)
+
+    # Read and store each row in profits and months lists
     for row in csvreader:
         months.append(row[0])
         
         profit_num = int(row[1])
         profits.append(profit_num)
-        
-#The total number of months included in the dataset
 
-print(f"Total Months: {len(months)}")
+# Open analysis file to write to and create if does not exist
+analysis_path = os.path.join('analysis', 'pybank_analysis.txt')
+with open(analysis_path, 'w') as analysis_file:
+    analysis_file.write("Financial Analysis \n")
+    print("Financial Analysis")
 
-#The net total amount of "Profit/Losses" over the entire period
+    analysis_file.write("--------------- \n")
+    print("---------------")
 
-print(f"Total: ${sum(profits)}")
+    #The total number of months included in the dataset
+    analysis_file.write(f"Total Months: {len(months)} \n")
+    print(f"Total Months: {len(months)}")
 
-#The changes in "Profit/Losses" over the entire period, and then the average of those changes
-for i in range(len(profits)-1):
-    current_profit = int(profits[i])
-    next_profit = int(profits[i+1])
-    profitchange.append(next_profit - current_profit)
+    #The net total amount of "Profit/Losses" over the entire period
+    analysis_file.write(f"Total: ${sum(profits)} \n")
+    print(f"Total: ${sum(profits)}")
 
-#The average profit change
-profit_change_average = sum(profitchange) / len(profitchange)
-print(f"Average Change: ${profit_change_average}")
+    #List of the changes in "Profit/Losses" over the entire period
+    for i in range(len(profits)-1):
+        current_profit = int(profits[i])
+        next_profit = int(profits[i+1])
+        profitchange.append(next_profit - current_profit)
 
-#The greatest increase in profits (date and amount) over the entire period
+    #The average profit change
+    profit_change_average = sum(profitchange) / len(profitchange)
+    analysis_file.write(f"Average Change: ${profit_change_average} \n")
+    print(f"Average Change: ${profit_change_average}")
 
-max_profit_change = max(profitchange)
-profit_change_index = profitchange.index(max_profit_change)
-max_change_month = months[profit_change_index + 1]
+    #The greatest increase in profits (date and amount) over the entire period
+    max_profit_change = max(profitchange)
+    profit_change_index = profitchange.index(max_profit_change)
+    max_change_month = months[profit_change_index + 1]
 
-print(f"Greatest Increase in Profits: {max_change_month} (${max_profit_change})")
+    analysis_file.write(f"Greatest Increase in Profits: {max_change_month} (${max_profit_change}) \n")
+    print(f"Greatest Increase in Profits: {max_change_month} (${max_profit_change})")
 
-#The greatest decrease in profits (date and amount) over the entire period
+    #The greatest decrease in profits (date and amount) over the entire period
+    min_profit_change = min(profitchange)
+    min_change_month = months[profitchange.index(min_profit_change) + 1]
 
-min_profit_change = min(profitchange)
-min_change_month = months[profitchange.index(min_profit_change) + 1]
-
-print(f"Greatest Decrease in Profits: {min_change_month} (${min_profit_change})")
+    analysis_file.write(f"Greatest Decrease in Profits: {min_change_month} (${min_profit_change}) \n")
+    print(f"Greatest Decrease in Profits: {min_change_month} (${min_profit_change})")
 
 
 
