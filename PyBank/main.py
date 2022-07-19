@@ -55,12 +55,5 @@ min_change_month = months[profitchange.index(min_profit_change) + 1]
 
 print(f"Greatest Decrease in Profits: {min_change_month} (${min_profit_change})")
 
-#count items in column 1 
-    # months = []
-    # months = dict[]
-    # Print("Total Months" 
-#sum items in column 2 Print("Total:" sumint(column2))
-#find changes between each month in column 2, then find average amt of changes 
-#find greatest monthly increase in column 2
-#find greatest monthly decrease in column 2
+
 
